@@ -1,0 +1,9 @@
+* {
+  box-sizing: border-box;
+}
+.px-2 {
+  padding: 0 16px;
+}
+.p-3 {
+  padding: 3rem;
+}
