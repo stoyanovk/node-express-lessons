@@ -11,7 +11,7 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
   const course = new Course(req.body.title, req.body.price, req.body.label);
   course.save()
-  res.redirect("/");
+  res.redirect("/courses");
 });
 
 module.exports = router;
