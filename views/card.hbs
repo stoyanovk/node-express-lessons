@@ -1,1 +1,28 @@
 <h1>Card</h1>
+{{#if card.courses}}
+<table id='card'>
+    <thead>
+        <tr>
+            <th>Curs</th>
+            <th>count</th>
+            <th>Price</th>
+            <th>Sum</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {{#each card.courses}}
+        <tr>
+            <td>{{title}}</td>
+            <td>{{count}}</td>
+            <td>
+                <button class="btn btn-primary js-btn" data-id="{{id}}">delete</button>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<div><strong>Price</strong> <strong>{{card.totalPrice}}</strong></div>
+{{else}}
+<div> card is empty</div>
+{{/if}}

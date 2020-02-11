@@ -4,6 +4,7 @@ const addRoute = require("./routes/add");
 const cardRoute = require("./routes/card");
 const coursesRoute = require("./routes/courses");
 const mainRoute = require("./routes/main");
+const path = require('path')
 const app = express();
 
 //зарегистрировать шаблонизатор
@@ -16,7 +17,7 @@ app.engine("hbs", hbs.engine); // регистрируем движок шабл
 app.set("view engine", "hbs"); // указываем что расширение файла hbs
 app.set("views", "views"); // layout path
 
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use(express.urlencoded({ extended: false }));
 
@@ -24,7 +25,6 @@ app.use("/", mainRoute);
 app.use("/courses", coursesRoute);
 app.use("/add", addRoute);
 app.use("/card", cardRoute);
-
 
 const PORT = process.env.PORT || 3000;
 

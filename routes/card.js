@@ -4,9 +4,12 @@ const Card = require("../models/Card");
 
 const router = Router();
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
+  const card = await Card.getCardItems();
+
   res.render("card", {
-    title: "card"
+    title: "card",
+    card
   });
 });
 
