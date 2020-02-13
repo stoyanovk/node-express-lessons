@@ -1,6 +1,6 @@
 <h1>Card</h1>
 {{#if card.courses}}
-<table id='card'>
+<table>
     <thead>
         <tr>
             <th>Curs</th>
@@ -10,7 +10,7 @@
         </tr>
     </thead>
 
-    <tbody>
+    <tbody id='card'>
         {{#each card.courses}}
         <tr>
             <td>{{title}}</td>
@@ -22,7 +22,7 @@
         {{/each}}
     </tbody>
 </table>
-<div><strong>Price</strong> <strong>{{card.totalPrice}}</strong></div>
+<div><strong>Price</strong> <strong id="price">{{card.totalPrice}}</strong></div>
 {{else}}
 <div> card is empty</div>
 {{/if}}

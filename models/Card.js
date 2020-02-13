@@ -33,10 +33,24 @@ class Card {
     });
   }
   static write(path, data) {
-    fs.writeFile(path, JSON.stringify(data), err => {
-      if (err) throw err;
-      console.log("card writed");
+    return new Promise((resolve, reject) => {
+      fs.writeFile(path, JSON.stringify(data), err => {
+        if (err) reject(err);
+        console.log("card writed");
+        resolve(data);
+      });
     });
+  }
+  static async remove(id) {
+    const card = await Card.getCardItems();
+    const ind = card.courses.findIndex(c => c.id === id);
+    card.totalPrice -= card.courses[ind].price;
+    if (card.courses[ind].count === 1) {
+      card.courses = card.courses.filter(c => c.id !== id);
+    } else {
+      card.courses[ind].count--;
+    }
+    return Card.write(p, card);
   }
 }
 module.exports = Card;
