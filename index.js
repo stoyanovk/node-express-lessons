@@ -1,13 +1,13 @@
 const express = require("express");
 const exphbs = require("express-handlebars");
+const mongoose = require("mongoose");
 const addRoute = require("./routes/add");
 const cardRoute = require("./routes/card");
 const coursesRoute = require("./routes/courses");
 const mainRoute = require("./routes/main");
-const path = require('path')
+const path = require("path");
 const app = express();
 
-//зарегистрировать шаблонизатор
 const hbs = exphbs.create({
   defaultLayout: "main", //default layout
   extname: "hbs" // file extension
@@ -28,6 +28,19 @@ app.use("/card", cardRoute);
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`server is running on port ${PORT}`);
-});
+async function start() {
+  try {
+    const url =
+      "mongodb+srv://admin:F8a9LWCdYhOtIjUn@cluster0-y4oel.mongodb.net/shop";
+    await mongoose.connect(url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+    app.listen(PORT, () => {
+      console.log(`server is running on port ${PORT}`);
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
+start();
