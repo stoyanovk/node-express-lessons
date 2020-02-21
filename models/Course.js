@@ -9,6 +9,7 @@ const Course = new Schema({
     type: Number
   },
   label: String
+  // _id: String
 });
 
 module.exports = model("Course", Course);

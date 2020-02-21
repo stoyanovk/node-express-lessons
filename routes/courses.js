@@ -19,11 +19,26 @@ router.get("/:id", async (req, res) => {
   });
 });
 
-router.post("/edit", (req, res) => {
-  const { id, ...rest } = req.body;
-  // console.dir(req.body);
-  Course.findByIdAndUpdate(id, rest);
-  res.redirect("/courses");
+router.post("/edit", async (req, res) => {
+  try {
+    const { id, ...rest } = req.body;
+    console.log(id);
+    await Course.findByIdAndUpdate(id, rest);
+    res.redirect("/courses");
+  } catch (e) {
+    console.log(e);
+  }
+});
+router.post("/delete", async (req, res) => {
+  console.log("delete");
+  const { id } = req.body;
+  try {
+    console.log(id);
+    await Course.findByIdAndDelete({ _id: id });
+    res.redirect("/courses");
+  } catch (e) {
+    console.log(e);
+  }
 });
 router.get("/:id/edit", async (req, res) => {
   const id = req.params.id;

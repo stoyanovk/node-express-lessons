@@ -34,7 +34,8 @@ async function start() {
       "mongodb+srv://admin:F8a9LWCdYhOtIjUn@cluster0-y4oel.mongodb.net/shop";
     await mongoose.connect(url, {
       useNewUrlParser: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: true,
+      useFindAndModify: false
     });
     app.listen(PORT, () => {
       console.log(`server is running on port ${PORT}`);
