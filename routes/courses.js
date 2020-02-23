@@ -1,9 +1,14 @@
 const { Router } = require("express");
 const router = Router();
 const Course = require("../models/Course");
+const User = require("../models/User");
 
 router.get("/", async (req, res) => {
-  const courses = await Course.find();
+  const courses = await Course.find().populate({
+    path: "userId",
+
+    select: "name email"
+  });
 
   res.render("courses", {
     title: "Courses",
@@ -33,7 +38,6 @@ router.post("/delete", async (req, res) => {
   console.log("delete");
   const { id } = req.body;
   try {
-    console.log(id);
     await Course.findByIdAndDelete({ _id: id });
     res.redirect("/courses");
   } catch (e) {

@@ -1,5 +1,5 @@
 <h1>Card</h1>
-{{#if card.courses}}
+{{#if card}}
 <table>
     <thead>
         <tr>
@@ -11,18 +11,18 @@
     </thead>
 
     <tbody id='card'>
-        {{#each card.courses}}
+        {{#each card}}
         <tr>
             <td>{{title}}</td>
             <td>{{count}}</td>
             <td>
-                <button class="btn btn-primary js-btn" data-id="{{id}}">delete</button>
+                <button class="btn btn-primary js-btn" data-id="{{_id}}">delete</button>
             </td>
         </tr>
         {{/each}}
     </tbody>
 </table>
-<div><strong>Price</strong> <strong id="price">{{card.totalPrice}}</strong></div>
+<div><strong>Price</strong> <strong id="price">{{price}}</strong></div>
 {{else}}
 <div> card is empty</div>
 {{/if}}

@@ -1,6 +1,7 @@
 const express = require("express");
 const exphbs = require("express-handlebars");
 const mongoose = require("mongoose");
+const User = require("./models/User");
 const addRoute = require("./routes/add");
 const cardRoute = require("./routes/card");
 const coursesRoute = require("./routes/courses");
@@ -21,6 +22,16 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(express.urlencoded({ extended: false }));
 
+app.use(async (req, res, next) => {
+  try {
+    const user = await User.findById({ _id: "5e5132347ea57f111c4241db" });
+    req.user = user;
+    next();
+  } catch (e) {
+    console.log(e);
+  }
+});
+
 app.use("/", mainRoute);
 app.use("/courses", coursesRoute);
 app.use("/add", addRoute);
@@ -37,6 +48,17 @@ async function start() {
       useUnifiedTopology: true,
       useFindAndModify: false
     });
+    const candidate = await User.findOne();
+    if (!candidate) {
+      const user = new User({
+        name: "Jon",
+        email: "Jon@mail.ru",
+        cart: {
+          items: []
+        }
+      });
+      user.save();
+    }
     app.listen(PORT, () => {
       console.log(`server is running on port ${PORT}`);
     });

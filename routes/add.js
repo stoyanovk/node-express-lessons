@@ -13,7 +13,8 @@ router.post("/", async (req, res) => {
     const course = new Course({
       title: req.body.title,
       price: req.body.price,
-      label: req.body.label
+      label: req.body.label,
+      userId: req.user
     });
     await course.save();
     res.redirect("/");
