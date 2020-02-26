@@ -39,7 +39,7 @@ app.use("/add", addRoute);
 app.use("/card", cardRoute);
 app.use("/order", orderRouter);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 async function start() {
   try {

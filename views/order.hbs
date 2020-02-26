@@ -1,1 +1,26 @@
 <h1>{{title}}</h1>
+{{#if resultCourses}}
+<table>
+    <thead>
+        <tr>
+            <th>Curs</th>
+            <th>count</th>
+            <th>Price</th>
+            <th>Sum</th>
+        </tr>
+    </thead>
+    <tbody id='card'>
+        {{#each resultCourses}}
+        <tr>
+            <td>{{course.title}}</td>
+            <td>{{count}}</td>
+            <td>{{course.price}}</td>
+            <td>{{totalPrice}}</td>
+        </tr>
+
+        {{/each}}
+    </tbody>
+</table>
+{{else}}
+order is empty
+{{/if}}
