@@ -28,7 +28,6 @@ router.post("/", async (req, res) => {
   const resultCourses = courses.items.map(item => {
     return { count: item.count, course: item.courseId._doc };
   });
-  console.log(resultCourses);
 
   const order = new Order({
     courses: resultCourses,

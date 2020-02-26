@@ -39,7 +39,7 @@ router.delete("/remove/:id", async (req, res) => {
   const result = user.items.map(item => {
     return { ...item.courseId._doc, count: item.count };
   });
-  console.log(getSumPrice(result));
+
 
   res.status(200).json({ courses: result, totalPrice: getSumPrice(result) });
   res.redirect("/card");

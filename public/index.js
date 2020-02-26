@@ -24,3 +24,5 @@ document.addEventListener("click", function(e) {
       price.innerHTML = r.totalPrice;
     });
 });
+
+var instance = M.Tabs.init(document.querySelector(".tabs"));

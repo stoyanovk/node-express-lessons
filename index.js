@@ -7,6 +7,7 @@ const cardRoute = require("./routes/card");
 const coursesRoute = require("./routes/courses");
 const mainRoute = require("./routes/main");
 const orderRouter = require("./routes/order");
+const authRouter = require("./routes/auth");
 const path = require("path");
 const app = express();
 
@@ -38,6 +39,7 @@ app.use("/courses", coursesRoute);
 app.use("/add", addRoute);
 app.use("/card", cardRoute);
 app.use("/order", orderRouter);
+app.use("/auth", authRouter);
 
 const PORT = process.env.PORT || 3001;
 
