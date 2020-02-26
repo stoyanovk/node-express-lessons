@@ -65,4 +65,8 @@ user.methods.removeCourse = function(id) {
   return this.save();
 };
 
+user.methods.clearCart = function() {
+  this.cart.items = [];
+  this.save();
+};
 module.exports = model("User", user);

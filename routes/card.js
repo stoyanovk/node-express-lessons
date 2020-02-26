@@ -19,7 +19,6 @@ router.get("/", async (req, res) => {
     count: item.count
   }));
   const price = getSumPrice(resCart);
-  console.log(getSumPrice(resCart));
 
   res.render("card", {
     title: "card",
