@@ -6,19 +6,19 @@ router.get("/", async (req, res) => {
   const orders = await Order.find({ "user.userId": req.user._id }).populate(
     "items.userId"
   );
+
   const resultCourses = orders.map(o => {
-    const course = o._doc.courses.map(c => ({
+    const courses = o._doc.courses.map(c => ({
       ...c._doc,
-      totalPrice: c._doc.course.price * c._doc.count
+      totalPrice: c.course.price * c.count
     }));
 
-    return course;
+    return { ...o._doc, courses };
   });
-  console.dir(resultCourses);
-
+  // res.json(resultCourses);
   res.render("order", {
     title: "Order",
-    resultCourses
+    orders: resultCourses
   });
 });
 
