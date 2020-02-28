@@ -1,13 +1,19 @@
 <nav class="px-2">
     <div class="nav-wrapper">
-        <a href="#" class="brand-logo">NodeJS</a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <a href="#" class="brand-logo left">NodeJS</a>
+        <ul id="nav-mobile" class="right hide-on-xs-and-down">
             <li><a href="/">Main</a></li>
             <li><a href="/courses">courses</a></li>
+
+            {{#if isAuth}}
             <li><a href="/add">add</a></li>
             <li><a href="/card">card</a></li>
             <li><a href="/order">order</a></li>
+            <li><a href="/auth/exit">exit</a></li>
+            {{else}}
             <li><a href="/auth">auth</a></li>
+            {{/if}}
+
         </ul>
     </div>
 </nav>

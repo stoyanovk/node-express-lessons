@@ -14,11 +14,13 @@
                 </div>
                 <div class="card-action">
                     <a href="/courses/{{id}}">This is a link</a>
+                    {{#if @root.isAuth}}
                     <a href="/courses/{{id}}/edit">edit</a>
                     <form action="/card/add" method="POST">
                         <input type="hidden" name="id" value="{{id}}" />
                         <button class="btn  btn-primary">buy</button>
                     </form>
+                    {{/if}}
                 </div>
             </div>
         </div>

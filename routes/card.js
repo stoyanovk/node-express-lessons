@@ -12,7 +12,10 @@ function getSumPrice(courses) {
 }
 
 router.get("/", async (req, res) => {
-  const cart = await req.user.populate("cart.items.courseId").execPopulate();
+  console.dir(req.session.user);
+  const cart = await req.session.user
+    .populate("cart.items.courseId")
+    .execPopulate();
 
   const resCart = cart.cart.items.map(item => ({
     ...item.courseId._doc,
@@ -39,7 +42,6 @@ router.delete("/remove/:id", async (req, res) => {
   const result = user.items.map(item => {
     return { ...item.courseId._doc, count: item.count };
   });
-
 
   res.status(200).json({ courses: result, totalPrice: getSumPrice(result) });
   res.redirect("/card");
