@@ -8,6 +8,7 @@ const mainRoute = require("./routes/main");
 const orderRouter = require("./routes/order");
 const authRouter = require("./routes/auth");
 const varMiddleware = require("./middleware/varMiddleware");
+const userMiddleware = require("./middleware/user");
 const path = require("path");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
@@ -46,6 +47,7 @@ app.use(
 );
 
 app.use(varMiddleware);
+app.use(userMiddleware);
 
 app.use("/", mainRoute);
 app.use("/courses", coursesRoute);

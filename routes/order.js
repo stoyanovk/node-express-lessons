@@ -4,9 +4,9 @@ const auth = require("../middleware/auth");
 const router = Router();
 
 router.get("/", auth, async (req, res) => {
-  const orders = await Order.find({ "user.userId": req.user._id }).populate(
-    "items.userId"
-  );
+  const orders = await Order.find({
+    "user.userId": req.session.user._id
+  }).populate("items.userId");
 
   const resultCourses = orders.map(o => {
     const courses = o._doc.courses.map(c => ({
@@ -24,7 +24,9 @@ router.get("/", auth, async (req, res) => {
 });
 
 router.post("/", auth, async (req, res) => {
-  const courses = await req.user.cart.populate("items.courseId").execPopulate();
+  const courses = await req.session.user.cart
+    .populate("items.courseId")
+    .execPopulate();
 
   const resultCourses = courses.items.map(item => {
     return { count: item.count, course: item.courseId._doc };
@@ -33,12 +35,12 @@ router.post("/", auth, async (req, res) => {
   const order = new Order({
     courses: resultCourses,
     user: {
-      name: req.user.name,
-      userId: req.user
+      name: req.session.user.name,
+      userId: req.session.user
     }
   });
   await order.save();
-  req.user.clearCart();
+  req.session.user.clearCart();
   res.redirect("/order");
 });
 
