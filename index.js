@@ -11,6 +11,7 @@ const varMiddleware = require("./middleware/varMiddleware");
 const path = require("path");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
+
 const url =
   "mongodb+srv://admin:F8a9LWCdYhOtIjUn@cluster0-y4oel.mongodb.net/shop";
 const app = express();

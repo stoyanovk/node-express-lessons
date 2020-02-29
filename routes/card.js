@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const Course = require("../models/Course");
-const User = require("../models/User");
+const auth = require("../middleware/auth");
 const router = Router();
 
 function getSumPrice(courses) {
@@ -11,7 +11,7 @@ function getSumPrice(courses) {
   return totalPrice;
 }
 
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
   console.dir(req.session.user);
   const cart = await req.session.user
     .populate("cart.items.courseId")
@@ -30,13 +30,13 @@ router.get("/", async (req, res) => {
   });
 });
 
-router.post("/add", async (req, res) => {
+router.post("/add", auth, async (req, res) => {
   const course = await Course.findById(req.body.id);
   await req.user.addToCart(course);
   res.redirect("/card");
 });
 
-router.delete("/remove/:id", async (req, res) => {
+router.delete("/remove/:id", auth, async (req, res) => {
   await req.user.removeCourse(req.params.id);
   const user = await req.user.cart.populate("items.courseId").execPopulate();
   const result = user.items.map(item => {
