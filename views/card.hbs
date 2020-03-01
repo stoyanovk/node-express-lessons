@@ -16,7 +16,7 @@
             <td>{{title}}</td>
             <td>{{count}}</td>
             <td>
-                <button class="btn btn-primary js-btn" data-id="{{_id}}">delete</button>
+                <button class="btn btn-primary js-btn" data-csurf="{{@root.csurf}}" data-id="{{_id}}">delete</button>
             </td>
         </tr>
         {{/each}}
@@ -25,6 +25,7 @@
 <div><strong>Price</strong> <strong id="price">{{price}}</strong></div>
 
 <form action="/order" method="post">
+    <input type="hidden" name="_csrf" value="{{csurf}}">
     <button type="submit" class="btn">make order</div>
 </form>
 {{else}}

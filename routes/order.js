@@ -9,14 +9,16 @@ router.get("/", auth, async (req, res) => {
   }).populate("items.userId");
 
   const resultCourses = orders.map(o => {
-    const courses = o._doc.courses.map(c => ({
-      ...c._doc,
-      totalPrice: c.course.price * c.count
-    }));
+    const courses = o.courses.map(c => {
+      return {
+        ...c._doc,
+        totalPrice: c.course.price * c.count
+      };
+    });
 
     return { ...o._doc, courses };
   });
-  // res.json(resultCourses);
+
   res.render("order", {
     title: "Order",
     orders: resultCourses
@@ -31,7 +33,7 @@ router.post("/", auth, async (req, res) => {
   const resultCourses = courses.items.map(item => {
     return { count: item.count, course: item.courseId._doc };
   });
-
+  console.log(resultCourses);
   const order = new Order({
     courses: resultCourses,
     user: {

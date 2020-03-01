@@ -4,8 +4,12 @@ const price = document.getElementById("price");
 document.addEventListener("click", function(e) {
   if (!e.target.classList.contains("js-btn")) return;
   const id = e.target.getAttribute("data-id");
+  const token = e.target.getAttribute("data-csurf");
 
-  fetch(`/card/remove/${id}`, { method: "DELETE" })
+  fetch(`/card/remove/${id}`, {
+    method: "DELETE",
+    headers: { "CSRF-Token": token }
+  })
     .then(r => r.json())
     .then(r => {
       const result = r.courses.map(({ title, count, id }) => {
