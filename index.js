@@ -12,6 +12,7 @@ const userMiddleware = require("./middleware/user");
 const path = require("path");
 const session = require("express-session");
 const csurf = require('csurf')
+const flash = require('connect-flash');
 const MongoDBStore = require("connect-mongodb-session")(session);
 
 const url =
@@ -47,6 +48,7 @@ app.use(
   })
 );
 app.use(csurf())
+app.use(flash())
 
 app.use(varMiddleware);
 app.use(userMiddleware);
