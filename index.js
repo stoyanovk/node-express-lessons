@@ -11,12 +11,11 @@ const varMiddleware = require("./middleware/varMiddleware");
 const userMiddleware = require("./middleware/user");
 const path = require("path");
 const session = require("express-session");
-const csurf = require('csurf')
-const flash = require('connect-flash');
+const csurf = require("csurf");
+const flash = require("connect-flash");
+const SETTINGS = require("./settings");
 const MongoDBStore = require("connect-mongodb-session")(session);
 
-const url =
-  "mongodb+srv://admin:F8a9LWCdYhOtIjUn@cluster0-y4oel.mongodb.net/shop";
 const app = express();
 
 const hbs = exphbs.create({
@@ -33,7 +32,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: false }));
 
 var store = new MongoDBStore({
-  uri: url,
+  uri: SETTINGS.url,
   collection: "mySessions"
 }).on("error", function(error) {
   console.log(error);
@@ -41,14 +40,14 @@ var store = new MongoDBStore({
 
 app.use(
   session({
-    secret: "lol kek",
+    secret: SETTINGS.secretWord,
     resave: false,
     saveUninitialized: true,
     store
   })
 );
-app.use(csurf())
-app.use(flash())
+app.use(csurf());
+app.use(flash());
 
 app.use(varMiddleware);
 app.use(userMiddleware);
@@ -64,7 +63,7 @@ const PORT = process.env.PORT || 3002;
 
 async function start() {
   try {
-    await mongoose.connect(url, {
+    await mongoose.connect(SETTINGS.url, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useFindAndModify: false

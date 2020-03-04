@@ -1,7 +1,18 @@
 const Router = require("express");
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
+const nodemailer = require("nodemailer");
+const sgTransport = require("nodemailer-sendgrid-transport");
+const SETTINGS = require("../settings");
+const registerMail = require("../mail/register");
 const router = new Router();
+var options = {
+  auth: {
+    api_key: SETTINGS.mailKey
+  }
+};
+
+var mailer = nodemailer.createTransport(sgTransport(options));
 
 router.get("/", (req, res) => {
   res.render("auth", {
@@ -45,7 +56,7 @@ router.post("/login", async (req, res) => {
 });
 router.post("/register", async (req, res) => {
   try {
-    const { email, name, password, copypassword } = req.body;
+    const { email, name, password } = req.body;
     const candidate = await User.findOne({ email });
     if (candidate) {
       req.flash("registerErr", "user with such email already exists");
@@ -57,6 +68,7 @@ router.post("/register", async (req, res) => {
       await user.save();
     }
     res.redirect("/auth");
+    await mailer.sendMail(registerMail(email));
   } catch (err) {
     throw new Error(err);
   }
