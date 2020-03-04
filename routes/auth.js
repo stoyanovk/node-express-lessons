@@ -4,7 +4,9 @@ const User = require("../models/User");
 const nodemailer = require("nodemailer");
 const sgTransport = require("nodemailer-sendgrid-transport");
 const SETTINGS = require("../settings");
-const registerMail = require("../mail/register");
+const registerMail = require("../mails/register");
+const resetMail = require("../mails/reset");
+const crypto = require("crypto");
 const router = new Router();
 var options = {
   auth: {
@@ -71,6 +73,37 @@ router.post("/register", async (req, res) => {
     await mailer.sendMail(registerMail(email));
   } catch (err) {
     throw new Error(err);
+  }
+});
+
+router.get("/reset", (req, res) => {
+  res.render("reset", {
+    title: "reset pass",
+    error: req.flash("error")
+  });
+});
+
+router.post("/reset", (req, res) => {
+  try {
+    crypto.randomBytes(32, async (err, buf) => {
+      if (err) {
+        req.flash("error", "something went wrong");
+        return res.redirect("/auth");
+      }
+      const token = buf.toString("hex");
+      const candidate = await User.findOne({ email: req.body.email });
+
+      if (candidate) {
+        candidate.resetToken = token;
+        candidate.resetTokenExp = Date.now + 60 * 60 * 1000;
+        await candidate.save();
+        await mailer.sendMail(resetMail(candidate.email, token));
+      } else {
+        res.flash("error", "User with such email is not exist");
+      }
+    });
+  } catch (e) {
+    throw e;
   }
 });
 module.exports = router;
