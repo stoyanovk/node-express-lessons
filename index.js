@@ -10,6 +10,7 @@ const authRouter = require("./routes/auth");
 const varMiddleware = require("./middleware/varMiddleware");
 const userMiddleware = require("./middleware/user");
 const path = require("path");
+const helpers = require("./helpers");
 const session = require("express-session");
 const csurf = require("csurf");
 const flash = require("connect-flash");
@@ -20,7 +21,8 @@ const app = express();
 
 const hbs = exphbs.create({
   defaultLayout: "main",
-  extname: "hbs"
+  extname: "hbs",
+  helpers
 });
 
 app.engine("hbs", hbs.engine);
