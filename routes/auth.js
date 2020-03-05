@@ -95,15 +95,65 @@ router.post("/reset", (req, res) => {
 
       if (candidate) {
         candidate.resetToken = token;
-        candidate.resetTokenExp = Date.now + 60 * 60 * 1000;
+        candidate.resetTokenExp = Date.now() + 60 * 60 * 1000;
         await candidate.save();
+        res.redirect("/");
         await mailer.sendMail(resetMail(candidate.email, token));
       } else {
-        res.flash("error", "User with such email is not exist");
+        req.flash("error", "User with such email is not exist");
       }
     });
   } catch (e) {
     throw e;
   }
 });
+
+router.get("/reset/password/:token", async (req, res) => {
+  if (!req.params.token) {
+    return res.redirect("/auth/reset");
+  }
+
+  try {
+    const user = await User.findOne({
+      resetToken: req.params.token,
+      resetTokenExp: { $gt: Date.now() }
+    });
+
+    if (!user) {
+      req.flash("error", "срок ссылки вышел");
+      res.redirect("auth/reset");
+    } else {
+      res.render("set-password", {
+        title: "Set password",
+        token: user.resetToken
+      });
+    }
+  } catch (e) {
+    console.log(e);
+    res.redirect("/");
+  }
+});
+
+router.post("/reset/password", async (req, res) => {
+  try {
+    const user = await User.findOne({
+      resetToken: req.body.token,
+      resetTokenExp: { $gt: Date.now() }
+    });
+    if (!user) {
+      req.flash("error", "время ссылки истекло");
+      res.redirect("/");
+    } else {
+      user.password = await bcrypt.hash(req.body.password, 10);
+      user.resetToken = null;
+      user.resetTokenExp = null;
+      await user.save();
+      res.redirect("/auth");
+    }
+  } catch (e) {
+    throw e;
+    res.redirect("/");
+  }
+});
+
 module.exports = router;
