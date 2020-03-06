@@ -7,7 +7,9 @@ const coursesRoute = require("./routes/courses");
 const mainRoute = require("./routes/main");
 const orderRouter = require("./routes/order");
 const authRouter = require("./routes/auth");
+const profileRouter = require("./routes/profile");
 const varMiddleware = require("./middleware/varMiddleware");
+const errorPage = require("./middleware/errorPage");
 const userMiddleware = require("./middleware/user");
 const path = require("path");
 const helpers = require("./helpers");
@@ -60,6 +62,8 @@ app.use("/add", addRoute);
 app.use("/card", cardRoute);
 app.use("/order", orderRouter);
 app.use("/auth", authRouter);
+app.use("/profile", profileRouter);
+app.use(errorPage);
 
 const PORT = process.env.PORT || 3002;
 

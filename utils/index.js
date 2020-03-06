@@ -24,4 +24,6 @@ const registerValidators = [
     return true;
   })
 ];
-module.exports = registerValidators;
+module.exports = {
+  registerValidators
+};

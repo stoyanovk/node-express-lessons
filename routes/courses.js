@@ -3,7 +3,6 @@ const router = Router();
 const Course = require("../models/Course");
 const securityMiddleware = require("../middleware/security");
 
-
 router.get("/", async (req, res) => {
   const courses = await Course.find().populate({
     path: "userId",
@@ -18,11 +17,17 @@ router.get("/", async (req, res) => {
 });
 router.get("/:id", async (req, res) => {
   const id = req.params.id;
-  const course = await Course.findById(id);
-
-  res.render("course", {
-    course
-  });
+  try {
+    const course = await Course.findById(id);
+    res.render("course", {
+      course
+    });
+  } catch (e) {
+    res.render("404", {
+      title: "page is not found"
+    });
+    throw new Error(e);
+  }
 });
 
 router.get("/:id/edit", securityMiddleware, async (req, res) => {
