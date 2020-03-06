@@ -33,9 +33,11 @@
     <div id="register" class="col s6 offset-s3">
         <h2>Sing up</h1>
             {{#if registerErr}}
-            {{registerErr}}
+            <div class="err-box">
+                {{registerErr}}
+            </div>
             {{/if}}
-            <form action="/auth/register" method="post" class="p-3">
+            <form action="/auth/register" method="post" class="p-3" novalidate>
                 <div class="row">
                     <div class="input-field col s12">
                         <input placeholder="email" value="lo@kek.com" id="first_name" type="email" name="email"
@@ -47,11 +49,11 @@
                         <label for="last_name">name</label>
                     </div>
                     <div class="input-field col s12">
-                        <input id="last_name" type="password" value="123456" class="validate" name="password">
+                        <input id="password" type="password" value="123456" class="validate" name="password">
                         <label for="last_name">password</label>
                     </div>
                     <div class="input-field col s12">
-                        <input id="last_name" type="password" value="123456" class="validate" name="copypassword">
+                        <input id="confirm" type="password" value="123456" class="validate" name="confirm">
                         <label for="last_name">password</label>
                     </div>
                     <input type="hidden" name="_csrf" value="{{csurf}}">

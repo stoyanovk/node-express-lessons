@@ -7,3 +7,8 @@
 .p-3 {
   padding: 3rem;
 }
+.err-box {
+  color: white;
+  background-color: tomato;
+  padding: 5px 10px;
+}

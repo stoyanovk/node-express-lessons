@@ -7,6 +7,8 @@ const SETTINGS = require("../settings");
 const registerMail = require("../mails/register");
 const resetMail = require("../mails/reset");
 const crypto = require("crypto");
+const registerValidators = require("../utils");
+const { validationResult } = require("express-validator");
 const router = new Router();
 var options = {
   auth: {
@@ -56,24 +58,30 @@ router.post("/login", async (req, res) => {
     console.log(err);
   }
 });
-router.post("/register", async (req, res) => {
-  try {
-    const { email, name, password } = req.body;
-    const candidate = await User.findOne({ email });
-    if (candidate) {
-      req.flash("registerErr", "user with such email already exists");
-      res.redirect("/auth#register");
-    }
-    if (!candidate) {
-      const hashPassword = await bcrypt.hash(password, 10);
-      const user = new User({ email, name, password: hashPassword });
-      await user.save();
-    }
-    res.redirect("/auth");
-    await mailer.sendMail(registerMail(email));
-  } catch (err) {
-    throw new Error(err);
+router.post("/register", registerValidators, async (req, res) => {
+  const { errors } = validationResult(req);
+  if (errors.length !== 0) {
+    req.flash("registerErr", errors[0].msg);
+    return res.status(422).redirect("/auth#register");
   }
+  res.redirect("/auth#register");
+  // try {
+  //   const { email, name, password } = req.body;
+  //   const candidate = await User.findOne({ email });
+  //   if (candidate) {
+  //     req.flash("registerErr", "user with such email already exists");
+  //     res.redirect("/auth#register");
+  //   }
+  //   if (!candidate) {
+  //     const hashPassword = await bcrypt.hash(password, 10);
+  //     const user = new User({ email, name, password: hashPassword });
+  //     await user.save();
+  //   }
+  //   res.redirect("/auth");
+  //   await mailer.sendMail(registerMail(email));
+  // } catch (err) {
+  //   throw new Error(err);
+  // }
 });
 
 router.get("/reset", (req, res) => {
