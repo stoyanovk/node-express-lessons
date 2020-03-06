@@ -64,24 +64,18 @@ router.post("/register", registerValidators, async (req, res) => {
     req.flash("registerErr", errors[0].msg);
     return res.status(422).redirect("/auth#register");
   }
-  res.redirect("/auth#register");
-  // try {
-  //   const { email, name, password } = req.body;
-  //   const candidate = await User.findOne({ email });
-  //   if (candidate) {
-  //     req.flash("registerErr", "user with such email already exists");
-  //     res.redirect("/auth#register");
-  //   }
-  //   if (!candidate) {
-  //     const hashPassword = await bcrypt.hash(password, 10);
-  //     const user = new User({ email, name, password: hashPassword });
-  //     await user.save();
-  //   }
-  //   res.redirect("/auth");
-  //   await mailer.sendMail(registerMail(email));
-  // } catch (err) {
-  //   throw new Error(err);
-  // }
+  try {
+    const { email, name, password } = req.body;
+
+    const hashPassword = await bcrypt.hash(password, 10);
+    const user = new User({ email, name, password: hashPassword });
+    await user.save();
+
+    res.redirect("/auth");
+    await mailer.sendMail(registerMail(email));
+  } catch (err) {
+    throw new Error(err);
+  }
 });
 
 router.get("/reset", (req, res) => {
