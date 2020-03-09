@@ -1,6 +1,7 @@
 const { body } = require("express-validator");
 const User = require("../models/User");
 
+
 const registerValidators = [
   body("email", "email is not correct")
     .isEmail()
@@ -24,6 +25,8 @@ const registerValidators = [
     return true;
   })
 ];
+
+
 module.exports = {
   registerValidators
 };

@@ -5,6 +5,7 @@ const user = new Schema({
     type: String,
     required: true
   },
+  avatarUrl: String,
   email: {
     type: String,
     required: true
